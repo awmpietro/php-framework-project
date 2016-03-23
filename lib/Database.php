@@ -4,6 +4,7 @@ use \PDO;
 
 class Database {
     protected static $connection;
+	protected static $fetchMode;
 
     public function connect() {    
         if(!isset(self::$connection)) {
@@ -22,25 +23,19 @@ class Database {
         }
     }
 
-    public function query($query) {
+    public function execute($query, $params) {
         try {
-            $this -> connect();
-            $data = self::$connection->query($query);
-            return $data;
+            $this->connect();
+			$statement = self::$connection->prepare($query);
+			if(!empty($params)){
+				foreach($params as $key => $value){
+					$statement->bindParam(":{key}", $value);
+				}
+			}
+            $statement->execute();
+            return $statement;
         } catch(PDOException $e) {
             echo 'Erro: ' . $e->getMessage();
         }
-    }
-
-    public function select($query) {
-        $rows = array();
-        $result = $this -> query($query);
-        if($result === false) {
-            return false;
-        }
-        while($row = $result->fetch( PDO::FETCH_ASSOC )){ 
-             $rows[] = $row;
-        }
-        return $rows;
     }
 }
