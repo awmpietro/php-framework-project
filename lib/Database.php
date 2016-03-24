@@ -1,18 +1,23 @@
 <?php
 namespace lib;
-use \PDO;
+use \PDO as PDO;
 
 class Database {
     private static $connection;
+	private $db;
 	public $fetchMode = PDO::FETCH_ASSOC;
+	
+	public function __construct(){
+		require_once('./config/database.php');
+		$this->db = $database['default'];
+	}
 
     public function connect() {    
         if(!isset(self::$connection)) {
-            $config = parse_ini_file('./config/database.ini'); 
             try {
-                self::$connection = new PDO("mysql:host={$config['host']};dbname={$config['database']}", $config['user'], $config['password']);
-                self::$connection->setAttribute(\PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                self::$connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+                self::$connection = new PDO("mysql:host={$this->db['host']};dbname={$this->db['dbname']}", $this->db['user'], $this->db['password']);
+                self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::$connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
                 return self::$connection;
             } catch(PDOException $e) {
                 echo 'Erro: ' . $e->getMessage();
@@ -36,11 +41,15 @@ class Database {
 	            	$result[] = $row;
 	            }
 	            return $result;
-        	}finally{
-        		return $result;
-        	}
+        	}catch(\PDOException $e) {
+				unset($e);
+				return $result;
+			}
+			//finally{
+        		//return $result;
+        	//}
         } catch(\PDOException $e) {
-            echo 'Erro: ' . $e->getMessage();
+            echo 'Erro: '.$e->getMessage();
         }
     }
 }

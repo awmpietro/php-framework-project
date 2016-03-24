@@ -30,20 +30,6 @@ class BaseModel{
 		}
 	}
 	
-	public function where($where = ''){
-		$lastKey = $this->getLastItem($where);
-		$sql = " WHERE";
-		foreach($where as $key => $value){
-			if($key === $lastKey){
-				$sql .= " {$key} = :{$key}";
-			}else{
-				$sql .= " {$key} = :{$key} AND";
-			}
-			$this->params[":{$key}"] = $value;
-		}
-		$this->sql .= $sql;
-	}
-	
 	public function create($data){
 		$lastKey = $this->getLastItem($data);
 		$this->sql = "INSERT INTO ". $this->table ." (";
@@ -82,6 +68,46 @@ class BaseModel{
 		$this->sql = "DELETE FROM {$this->table}";
 	}
 	
+	public function where($where = ''){
+		$lastKey = $this->getLastItem($where);
+		$sql = " WHERE";
+		foreach($where as $key => $value){
+			if($key === $lastKey){
+				$sql .= " {$key} = :{$key}";
+			}else{
+				$sql .= " {$key} = :{$key} AND";
+			}
+			$this->params[":{$key}"] = $value;
+		}
+		$this->sql .= $sql;
+	}
+	
+	public function orderBy($fields){
+		$mode = array('ASC', 'DESC');
+		$sql = " ORDER BY";
+		if(is_array($fields)){
+			$lastKey = $this->getLastItem($fields);
+			foreach($fields as $key => $value){
+				if($key === $lastKey){
+					if(in_array($value, $mode)){
+						$sql .= " {$key} {$value}";
+					}else{
+						$sql .= " {$value}";
+					}
+				}else{
+					if(in_array($value, $mode)){
+						$sql .= " {$key} {$value}, ";
+					}else{
+						$sql .= " {$value}, ";
+					}
+				}
+			}
+		}else{
+			$sql .= " {$fields}";
+		}
+		$this->sql .= $sql;
+	}
+	
 	private function getLastItem($data){
 		$keys = array_keys($data);
 		$lastKey = array_pop($keys);
@@ -89,6 +115,7 @@ class BaseModel{
 	}
 	
 	public function run(){
+		print_r($this->sql);exit;
 		$results = $this->db->execute($this->sql, $this->params);
 		return $results;
 	}

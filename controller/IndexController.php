@@ -1,9 +1,9 @@
 <?php
-namespace controller;
-use controller\BaseController as BaseController;
+namespace Controller;
+use Controller\BaseController as BaseController;
 use model\ProdutosModel as ProdutosModel;
 
-class ProdutosController extends BaseController {
+class IndexController extends BaseController {
 	
 	protected $produtos;
 	
