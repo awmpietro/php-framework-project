@@ -108,20 +108,6 @@ class BaseModel{
 		$this->sql .= $sql;
 	}
 	
-	public function where($where = ''){
-		$lastKey = $this->getLastItem($where);
-		$sql = " WHERE";
-		foreach($where as $key => $value){
-			if($key === $lastKey){
-				$sql .= " {$key} = :{$key}";
-			}else{
-				$sql .= " {$key} = :{$key} AND";
-			}
-			$this->params[":{$key}"] = $value;
-		}
-		$this->sql .= $sql;
-	}
-	
 	private function getLastItem($data){
 		$keys = array_keys($data);
 		$lastKey = array_pop($keys);
@@ -129,7 +115,6 @@ class BaseModel{
 	}
 	
 	public function run(){
-		print_r($this->sql);exit;
 		$results = $this->db->execute($this->sql, $this->params);
 		return $results;
 	}
