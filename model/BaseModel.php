@@ -11,80 +11,85 @@ class BaseModel{
 	
 	public function __construct(){
 		$this->db = new Database;
-		$this->db::fetchMode = PDO::FETCH_ASSOC;
 	}
 	
 	public function select($fields = ''){
 		if(empty($fields)){
-			$sql = "SELECT * FROM {$this->table}";
+			$this->sql = "SELECT * FROM {$this->table}";
 		}else{
+			$lastKey = $this->getLastItem($fields);
 			$find = '';
-			foreach($fields as $field){
-				if($field === end($fields)){
+			foreach($fields as $key => $field){
+				if($key === $lastKey){
 					$find .= $key;
 				}else{
-					$find .= $key . ', ';
+					$find .= "{$key}, ";
 				}
 			}
-			$sql = "SELECT {$find} FROM {$this->table}";
+			$this->sql = "SELECT {$find} FROM {$this->table}";
 		}
-		$this->sql = $sql;
 	}
 	
 	public function where($where = ''){
-		$sql .= " WHERE";
+		$lastKey = $this->getLastItem($where);
+		$sql = " WHERE";
 		foreach($where as $key => $value){
-			if($value === end($where)){
+			if($key === $lastKey){
 				$sql .= " {$key} = :{$key}";
-			$this->params = array($key => $value);
 			}else{
 				$sql .= " {$key} = :{$key} AND";
-				$this->params = array($key => $value);
 			}
+			$this->params[":{$key}"] = $value;
 		}
 		$this->sql .= $sql;
 	}
 	
 	public function create($data){
-		$params = array();
-		$sql = "INSERT INTO ". $this->table ." (";
+		$lastKey = $this->getLastItem($data);
+		$this->sql = "INSERT INTO ". $this->table ." (";
 		foreach($data as $key => $value){
-			if($value === end($data)){
-				$sql .= "{$key}";
+			if($key === $lastKey){
+				$this->sql .= "{$key}";
 			}else{
-				$sql .= "{$key}, ";
+				$this->sql .= "{$key}, ";
 			}
 		}
-		$sql .= ") VALUES (";
+		$this->sql .= ") VALUES (";
 		foreach($data as $key => $value){
-			if($value === end($data)){
-				$sql .= ":{$key})";
+			if($key === $lastKey){
+				$this->sql .= ":{$key})";
 			}else{
-				$sql .= ":{$key}, ";
+				$this->sql .= ":{$key}, ";
 			}
-			$params[":{key}"] = $value;
+			$this->params [":{$key}"] = $value;
 		}
-		$this->params = $params;
-		$this->sql = $sql;
 	}
 	
-	public function update($id = '', $data = ''){
-		extract($data);
-		$this->sql = "UPDATE ". $this->table . " SET nome = :nome, descricao = :descricao, preco = :preco WHERE id = :id";
-		$this->params = array(':nome' => $nome, ':descricao' => $descricao, ':preco' => $preco);
+	public function update($data = ''){
+		$lastKey = $this->getLastItem($data);
+		$this->sql = "UPDATE ". $this->table ." SET";
+		foreach($data as $key => $value){
+			if($key === $lastKey){
+				$this->sql .= " {$key} = :{$key}";
+			}else{
+				$this->sql .= " {$key} = :{$key},";
+			}
+			$this->params[":{$key}"] = $value;
+		}
 	}
 	
-	public function delete($id = ''){
-		$this->sql = "DELETE FROM {$this->table} WHERE id = :id";
-		$this->params = array(':id' => $id);
+	public function delete(){
+		$this->sql = "DELETE FROM {$this->table}";
+	}
+	
+	private function getLastItem($data){
+		$keys = array_keys($data);
+		$lastKey = array_pop($keys);
+		return $lastKey;
 	}
 	
 	public function run(){
 		$results = $this->db->execute($this->sql, $this->params);
-		$rows = array();
-		while($row = $results->fetch( $this->db::fetchMode )){ 
-			$rows[] = $row;
-		}
-		return $rows;
+		return $results;
 	}
 }

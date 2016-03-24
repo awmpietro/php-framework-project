@@ -3,8 +3,8 @@ namespace lib;
 use \PDO;
 
 class Database {
-    protected static $connection;
-	protected static $fetchMode;
+    private static $connection;
+	public $fetchMode = PDO::FETCH_ASSOC;
 
     public function connect() {    
         if(!isset(self::$connection)) {
@@ -12,6 +12,7 @@ class Database {
             try {
                 self::$connection = new PDO("mysql:host={$config['host']};dbname={$config['database']}", $config['user'], $config['password']);
                 self::$connection->setAttribute(\PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::$connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
                 return self::$connection;
             } catch(PDOException $e) {
                 echo 'Erro: ' . $e->getMessage();
@@ -23,18 +24,22 @@ class Database {
         }
     }
 
-    public function execute($query, $params) {
+    public function execute($query, $params = array()) {
         try {
             $this->connect();
 			$statement = self::$connection->prepare($query);
-			if(!empty($params)){
-				foreach($params as $key => $value){
-					$statement->bindParam(":{key}", $value);
-				}
-			}
-            $statement->execute();
-            return $statement;
-        } catch(PDOException $e) {
+            $statement->execute($params);
+            $result = true;
+        	try {
+        		$result = array();
+	            while($row = $statement->fetch( $this->fetchMode )){ 
+	            	$result[] = $row;
+	            }
+	            return $result;
+        	}finally{
+        		return $result;
+        	}
+        } catch(\PDOException $e) {
             echo 'Erro: ' . $e->getMessage();
         }
     }

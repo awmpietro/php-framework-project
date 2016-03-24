@@ -16,9 +16,9 @@ class ProdutosModel extends BaseModel{
 	}
 	
 	public function getProduto(){
-		$data = array('id' => $id);
+		$find = array('id' => $id);
 		$this->select();
-		$this->where($data);
+		$this->where($find);
 		$results = $this->run();
 		return $results;
 	}
@@ -33,7 +33,9 @@ class ProdutosModel extends BaseModel{
 	}
 	
 	public function updateProduto($id, $data){
-		$this->update($id, $data);
+		$find = array('id' => $id);
+		$this->update($data);
+		$this->where($find);
 		if($this->run()){
 			return true;
 		}else{
@@ -42,7 +44,9 @@ class ProdutosModel extends BaseModel{
 	}
 	
 	public function removerProduto($id) {
-		$this->delete($id);
+		$find = array('id' => $id);
+		$this->delete();
+		$this->where($find);
 		if($this->run()){
 			return true;
 		}else{
