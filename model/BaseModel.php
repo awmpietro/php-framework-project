@@ -30,20 +30,6 @@ class BaseModel{
 		}
 	}
 	
-	public function where($where = ''){
-		$lastKey = $this->getLastItem($where);
-		$sql = " WHERE";
-		foreach($where as $key => $value){
-			if($key === $lastKey){
-				$sql .= " {$key} = :{$key}";
-			}else{
-				$sql .= " {$key} = :{$key} AND";
-			}
-			$this->params[":{$key}"] = $value;
-		}
-		$this->sql .= $sql;
-	}
-	
 	public function create($data){
 		$lastKey = $this->getLastItem($data);
 		$this->sql = "INSERT INTO ". $this->table ." (";
@@ -80,6 +66,20 @@ class BaseModel{
 	
 	public function delete(){
 		$this->sql = "DELETE FROM {$this->table}";
+	}
+	
+	public function where($where = ''){
+		$lastKey = $this->getLastItem($where);
+		$sql = " WHERE";
+		foreach($where as $key => $value){
+			if($key === $lastKey){
+				$sql .= " {$key} = :{$key}";
+			}else{
+				$sql .= " {$key} = :{$key} AND";
+			}
+			$this->params[":{$key}"] = $value;
+		}
+		$this->sql .= $sql;
 	}
 	
 	private function getLastItem($data){
