@@ -1,16 +1,13 @@
 <?php
-namespace lib;
-use controller\ProdutoController as ProdutoController;
+namespace Controller;
 
 class FrontController
 {
-    const DEFAULT_CONTROLLER = "Produtos";
     const DEFAULT_ACTION     = "index";
     
-    protected $controller    = self::DEFAULT_CONTROLLER;
+    protected $controller    = DEFAULT_CONTROLLER;
     protected $action        = self::DEFAULT_ACTION;
     protected $params        = array();
-    protected $basePath      = "/";
     
     public function __construct(array $options = array()) {
         if (empty($options)) {
@@ -31,10 +28,13 @@ class FrontController
     
     protected function parseUri() {
         $path = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH), "/");
-        if($path == ''){
+        if($path === BASE_PATH){
         	$this->setController($this->controller);
         	$this->setAction($this->action);
         }else{
+			if(BASE_PATH != ''){
+				$path = trim(str_replace(BASE_PATH, "", $path), "/");
+			}
         	@list($controller, $action, $params) = explode("/", $path, 3);
         	if (isset($controller)){
         	    $this->setController($controller);
@@ -50,7 +50,7 @@ class FrontController
     
     public function setController($controller) {
         $controller = ucfirst(strtolower($controller)) . "Controller";
-        $controller = "controller\\" . $controller;
+        $controller = "Controller\\" . $controller;
         if (!class_exists($controller)) {
         	header("HTTP/1.0 404 Not Found");
         	echo "<h1>404 Not Found</h1>";

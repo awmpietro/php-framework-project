@@ -10,12 +10,12 @@ class ProdutosModel extends BaseModel{
 	}
 	
 	public function getProdutos(){
-		$results = $this->select();
+		$this->select();
 		$results = $this->run();
 		return $results;
 	}
 	
-	public function getProduto(){
+	public function getProduto($id){
 		$find = array('id' => $id);
 		$this->select();
 		$this->where($find);
