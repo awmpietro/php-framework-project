@@ -1,16 +1,19 @@
 <?php
-namespace model;
+namespace Model;
 use model\BaseModel as BaseModel;
 
 class ProdutosModel extends BaseModel{
 	
 	function __construct(){
-		$this->table = 'produto';
+		$this->table = 'produto p';
 		parent::__construct();
 	}
 	
 	public function getProdutos(){
 		$this->select();
+		$this->from($this->table);
+		$this->join('clientes c', array('p.id' => 'c.cliente_id'), 'INNER');
+		$this->join('pedidos pd', array('c.pedido_id' => 'pd.id'), 'LEFT');
 		$results = $this->run();
 		return $results;
 	}

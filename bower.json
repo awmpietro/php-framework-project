@@ -1,0 +1,27 @@
+{
+  "name": "php-framework-project",
+  "homepage": "https://github.com/awmpietro/php-framework-project",
+  "authors": [
+    "Arthur Mastropietro <arthur.mastropietro@gmail.com>"
+  ],
+  "description": "A small and light-weight php framework",
+  "main": "index.php",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/libs/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootbox.js": "bootbox#^4.4.0",
+    "bootstrap": "^3.3.6",
+    "html5shiv": "^3.7.3",
+    "jquery-validation": "jquery.validate#^1.13.0",
+    "respond": "^1.4.2",
+    "font-awesome" : "latest"
+  }
+}

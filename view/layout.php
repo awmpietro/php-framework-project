@@ -5,12 +5,12 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,300,400,600,700,800' rel='stylesheet' type='text/css'/>
-		<link type="text/css" rel="stylesheet" href="./public/css/bootstrap.css" />
-		<link type="text/css" rel="stylesheet" href="./public/css/font-awesome.css" />
+		<link type="text/css" rel="stylesheet" href="./public/libs/bootstrap/dist/css/bootstrap.min.css" />
+		<link type="text/css" rel="stylesheet" href="./public/libs/font-awesome/css/font-awesome.min.css" />
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
-		<script type="text/javascript" src="./public/js/html5shiv.js"></script>
-		<script type="text/javascript" src="./public/js/respond.min.js"></script>
+		<script type="text/javascript" src="./public/libs/html5shiv/dist/html5shiv.min.js"></script>
+		<script type="text/javascript" src="./public/libs/respond/dest/respond.min.js"></script>
 		<![endif]-->
 	</head>
 	<body >
@@ -33,9 +33,7 @@
 			</div>
 		</nav>
 		<?php echo $this->content; ?>
-		<script type="text/javascript" src="./public/js/jquery.js" ></script>
-		<script type="text/javascript" src="./public/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="./public/js/jquery.validate.js"></script>
-		<script type="text/javascript" src="./public/js/bootbox.min.js"></script>
+		<script type="text/javascript" src="./public/libs/jquery/dist/jquery.js" ></script>
+		<script type="text/javascript" src="./public/libs/bootstrap/dist/js/bootstrap.min.js"></script>
 	</body>
 </html>
