@@ -195,7 +195,7 @@ class BaseModel{
 	* Function that calls the execute method, which will execute the query in database. Should be called for last.
 	*/
 	public function run(){
-		print_r($this->sql);exit;
+		//print_r($this->sql);exit;
 		$results = $this->db->execute($this->sql, $this->params);
 		return $results;
 	}

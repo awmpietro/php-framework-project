@@ -12,8 +12,6 @@ class ProdutosModel extends BaseModel{
 	public function getProdutos(){
 		$this->select();
 		$this->from($this->table);
-		$this->join('clientes c', array('p.id' => 'c.cliente_id'), 'INNER');
-		$this->join('pedidos pd', array('c.pedido_id' => 'pd.id'), 'LEFT');
 		$results = $this->run();
 		return $results;
 	}

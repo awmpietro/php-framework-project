@@ -8,7 +8,7 @@
 	<div class="row">
 		<?php $this->flash( 'sucesso' ); ?>
 		<?php $this->flash( 'erro	' ); ?>
-		<form method="POST" id="adicionar_produto_form" action = "/produtos/adicionar_produto">
+		<form method="POST" id="adicionar_produto_form" action = "/index/adicionar_produto">
 			<div class="form-group">
 				<label for="nome_produto">Nome</label>
 				<input type="text" class="form-control" name="nome_produto" id="nome_produto" placeholder="Nome">

@@ -15,7 +15,7 @@ class Database {
     public function connect() {    
         if(!isset(self::$connection)) {
             try {
-                self::$connection = new PDO("mysql:host={$this->db['host']};dbname={$this->db['dbname']}", $this->db['user'], $this->db['password']);
+                self::$connection = new PDO("mysql:host={$this->db['host']};port={$this->db['port']};dbname={$this->db['dbname']};charset={$this->db['charset']}", $this->db['user'], $this->db['password']);
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
                 return self::$connection;

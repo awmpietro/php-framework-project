@@ -2,6 +2,7 @@
 namespace Controller;
 use Controller\BaseController as BaseController;
 use model\ProdutosModel as ProdutosModel;
+use lib\FormValidation as FormValidation;
 
 class IndexController extends BaseController {
 	
@@ -20,22 +21,37 @@ class IndexController extends BaseController {
 	
 	public function adicionar_produto(){
 		if( isset($_POST['submit']) ){
-			$produtosModel = new ProdutosModel();
-			if(!isset($_POST['nome_produto']) || !isset($_POST['descricao_produto']) || !isset($_POST['preco_produto'])){
-				$this->flash('erro', 'Todos os campos são de preenchimento obrigatório', 'danger');
-				return;
-			}
-			$data = array(
-				'nome' => filter_var($_POST['nome_produto'], FILTER_SANITIZE_STRING),
-				'descricao' => filter_var($_POST['descricao_produto'], FILTER_SANITIZE_STRING),
-				'preco' => filter_var($_POST['preco_produto'], FILTER_SANITIZE_STRING)
-			);
-			if($produtosModel->createProduto($data)){
-				$this->flash('sucesso', 'Produto adicionado com sucesso', 'success');
+			$validation = new FormValidation();
+			$_POST = $validation->sanitize($_POST);
+			$validation->validation_rules(array(
+			    'nome_produto' => 'required|max_len,100|min_len,10',
+			    'descricao_produto' => 'required|max_len,100|min_len,10',
+			    'preco_produto' => 'required'
+			));
+			$validation->filter_rules(array(
+			    'nome_produto' => 'trim|sanitize_string',
+			    'descricao_produto' => 'trim|sanitize_string',
+			    'preco_produto'    => 'trim|sanitize_string'
+			));
+			$validated_data = $validation->run($_POST);
+			
+			if($validated_data === false) {
+				echo $validation->get_readable_errors(true);
+				//$this->flash('erro', 'Todos os campos são de preenchimento obrigatório', 'danger');
 			}else{
-				$this->flash('erro', 'Produto não pode ser adicionado, por favor tente novamente', 'danger');
+			    $produtosModel = new ProdutosModel();
+			    $data = array(
+			    	'nome' => $_POST['nome_produto'],
+			    	'descricao' => $_POST['descricao_produto'],
+			    	'preco' => $_POST['preco_produto']
+			    );
+			    if($produtosModel->createProduto($data)){
+			    	$this->flash('sucesso', 'Produto adicionado com sucesso', 'success');
+			    }else{
+			    	$this->flash('erro', 'Produto não pode ser adicionado, por favor tente novamente', 'danger');
+			    }
+			    header("Location: /produtos");
 			}
-			header("Location: /produtos");
 		}else{
 			$this->view('adicionar_produto');
 		}
