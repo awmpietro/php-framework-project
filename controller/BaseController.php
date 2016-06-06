@@ -2,12 +2,17 @@
 namespace Controller;
 
 class BaseController {
+	public $data = array();
 	public $content;
 	public $active;
+	public $css;
+	public $js;
 	
-	public function view($template, $data = array()){
-		if(!empty($data)){
-			extract($data);
+	public function view($template){
+		$this->data['css'] = $this->css;
+		$this->data['js'] = $this->js;
+		if(!empty($this->data)){
+			extract($this->data);
 		}
 		ob_start();
 		require_once('view/' . $template . ".php");

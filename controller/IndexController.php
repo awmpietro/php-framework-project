@@ -3,6 +3,7 @@ namespace Controller;
 use Controller\BaseController as BaseController;
 use model\ProdutosModel as ProdutosModel;
 use lib\FormValidation as FormValidation;
+use \Firebase\JWT\JWT as JWT;
 
 class IndexController extends BaseController {
 	
@@ -10,9 +11,20 @@ class IndexController extends BaseController {
 	
 	function __construct() {
 		$this->active = 'produtos';
+		$this->css = array(
+			'libs/bootstrap/dist/css/bootstrap.min.css',
+			'libs/font-awesome/css/font-awesome.min.css',
+		);
+		$this->js = array(
+			'libs/jquery/dist/jquery.js',
+			'libs/bootstrap/dist/js/bootstrap.min.js'
+		);
 	}
 
 	public function index() {
+		$token = array();
+		$token['id'] = '1';
+		echo JWT::encode($token, SERVER_KEY);
 		$produtosModel = new ProdutosModel();
 		$produtos = $produtosModel->getProdutos();
 		$data = array('produtos' => $produtos);
