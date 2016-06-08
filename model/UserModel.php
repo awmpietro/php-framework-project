@@ -1,5 +1,6 @@
 <?php
-namespace model;
+namespace Model;
+use Model\BaseModel;
 
 class UserModel extends BaseModel{
 
@@ -9,11 +10,15 @@ class UserModel extends BaseModel{
 	}
 	
 	public function authenticate($email, $password){
-		$this->db->select(array('id'));
-		$this->db->from($this->table);
-		$this->db->where(array('email' => $email, 'password' => $password));
+		$this->select(array('id', 'name'));
+		$this->from($this->table);
+		$this->where(array('email' => $email, 'password' => $password));
 		$results = $this->run();
-		return $results;
+		if($results){
+			return $results[0];
+		}else{
+			return $results;
+		}
 	}
 	
 	public function getUsers(){

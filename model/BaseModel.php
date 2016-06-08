@@ -25,9 +25,9 @@ class BaseModel{
 			$find = '';
 			foreach($fields as $key => $field){
 				if($key === $lastKey){
-					$find .= $key;
+					$find .= $field;
 				}else{
-					$find .= "{$key}, ";
+					$find .= "{$field}, ";
 				}
 			}
 			$this->sql = "SELECT {$find}";

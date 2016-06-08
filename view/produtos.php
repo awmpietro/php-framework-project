@@ -29,4 +29,5 @@
 			</div>
 		</form>
 	</div>
+	<button type="button" class="btn btn-primary"id="btn_teste">Teste</button>
 </div>

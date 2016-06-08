@@ -17,18 +17,36 @@ class IndexController extends BaseController {
 		);
 		$this->js = array(
 			'libs/jquery/dist/jquery.js',
-			'libs/bootstrap/dist/js/bootstrap.min.js'
+			'libs/bootstrap/dist/js/bootstrap.min.js',
+			'js/user.js'
 		);
 	}
 
 	public function index() {
-		$token = array();
-		$token['id'] = '1';
-		echo JWT::encode($token, SERVER_KEY);
 		$produtosModel = new ProdutosModel();
 		$produtos = $produtosModel->getProdutos();
 		$data = array('produtos' => $produtos);
 		$this->view('produtos', $data);
+	}
+	
+	public function teste(){
+		$headers = getallheaders();
+		$authHeader = $headers['Authorization'];
+		if ($authHeader) {
+			//list($jwt) = sscanf( $authHeader, "Authorization: %s");
+			//if ($jwt) {
+				try {
+					$secretKey = base64_decode(SERVER_KEY);
+					$token = JWT::decode($authHeader, $secretKey, array('HS512'));
+					echo json_encode(array('Auth' => 'Ok'));
+				}catch (Exception $e) {
+					//header('HTTP/1.0 401 Unauthorized');
+					echo json_encode(array('Auth' => 'Failed'));
+				}
+				
+			//}
+				
+		}
 	}
 	
 	public function adicionar_produto(){
