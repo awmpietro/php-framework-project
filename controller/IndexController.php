@@ -10,7 +10,10 @@ class IndexController extends BaseController {
 	protected $produtos;
 	
 	function __construct() {
-		$this->active = 'produtos';
+		if(!$this->isLogged()){
+			$this->flash('erro', 'Faça login para acessar o sistema', 'danger');
+			header ("Location: login");
+		}
 		$this->css = array(
 			'libs/bootstrap/dist/css/bootstrap.min.css',
 			'libs/font-awesome/css/font-awesome.min.css',
@@ -23,30 +26,10 @@ class IndexController extends BaseController {
 	}
 
 	public function index() {
-		$produtosModel = new ProdutosModel();
-		$produtos = $produtosModel->getProdutos();
-		$data = array('produtos' => $produtos);
+		//$produtosModel = new ProdutosModel();
+		//$produtos = $produtosModel->getProdutos();
+		//$data = array('produtos' => $produtos);
 		$this->view('produtos', $data);
-	}
-	
-	public function teste(){
-		$headers = getallheaders();
-		$authHeader = $headers['Authorization'];
-		if ($authHeader) {
-			//list($jwt) = sscanf( $authHeader, "Authorization: %s");
-			//if ($jwt) {
-				try {
-					$secretKey = base64_decode(SERVER_KEY);
-					$token = JWT::decode($authHeader, $secretKey, array('HS512'));
-					echo json_encode(array('Auth' => 'Ok'));
-				}catch (Exception $e) {
-					//header('HTTP/1.0 401 Unauthorized');
-					echo json_encode(array('Auth' => 'Failed'));
-				}
-				
-			//}
-				
-		}
 	}
 	
 	public function adicionar_produto(){

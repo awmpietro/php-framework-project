@@ -40,7 +40,7 @@ class LoginController extends BaseController {
 		$tokenId    = base64_encode(mcrypt_create_iv(32));
 		$issuedAt   = time();
 		$notBefore  = $issuedAt + 10;             //Adding 10 seconds
-		$expire     = $notBefore + 60;            // Adding 60 seconds
+		//$expire     = $notBefore + 60;            // Adding 60 seconds
 		
 		/*
 		 * Create the token as an array
@@ -55,11 +55,10 @@ class LoginController extends BaseController {
 				'userName' => $user['name'], // User name
 			]
 		];
-		$secretKey = base64_decode(SERVER_KEY);
+		$secretKey = SERVER_KEY;
 		$jwt = JWT::encode(
 			$data,      //Data to be encoded in the JWT
-			$secretKey, // The signing key
-			'HS512'     // Algorithm used to sign the token, see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40#section-3
+			$secretKey
 		);
 		
 		$unencodedArray = ['jwt' => $jwt];

@@ -4,7 +4,7 @@ $(function(){
 		$.ajax({
 			url: 'index/teste',
 			beforeSend: function(request){
-				request.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('jwt'));
+				request.setRequestHeader('Authorization', window.sessionStorage.getItem('jwt'));
 			},
 			type: 'GET',
 			success: function(data) {

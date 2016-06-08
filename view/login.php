@@ -1,4 +1,5 @@
 <div class="container">
+	<?php $this->flash( 'erro' ); ?>
 	<form class="form-signin" id="login_form" method="POST" action="login/authenticate">
 		<h2 class="form-signin-heading">Login</h2>
 		<label for="inputEmail" class="sr-only">Email</label>
