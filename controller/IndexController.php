@@ -4,17 +4,25 @@ use Controller\BaseController as BaseController;
 use Model\ProdutosModel as ProdutosModel;
 use Lib\FormValidation as FormValidation;
 use \Autoloader as Autoloader;
+use \Firebase\JWT\JWT as JWT;
 
 class IndexController extends BaseController {
-
-	public function __construct() {
+	
+	protected $produtos;
+	
+	function __construct() {
+		if(!$this->isLogged()){
+			$this->flash('erro', 'Faça login para acessar o sistema', 'danger');
+			header ("Location: login");
+		}
 		$this->css = array(
-			Autoloader::generalLoader('bootstrap.min.css', FRONT_LIBS . "/bootstrap/dist/css"),
-			Autoloader::generalLoader('font-awesome.css', FRONT_LIBS ."/font-awesome/css")
+			'libs/bootstrap/dist/css/bootstrap.min.css',
+			'libs/font-awesome/css/font-awesome.min.css',
 		);
 		$this->js = array(
-			Autoloader::generalLoader('jquery.js', FRONT_LIBS . "/jquery/dist"),
-			Autoloader::generalLoader('bootstrap.min.js', FRONT_LIBS . "/bootstrap/dist/js")
+			'libs/jquery/dist/jquery.js',
+			'libs/bootstrap/dist/js/bootstrap.min.js',
+			'js/user.js'
 		);
 	}
 
@@ -23,6 +31,7 @@ class IndexController extends BaseController {
 		$produtos = $produtosModel->getProdutos();
 		$this->data = array('produtos' => $produtos);
 		$this->view('produtos');
+
 	}
 	
 	public function adicionar_produto(){

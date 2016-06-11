@@ -47,4 +47,18 @@ abstract class BaseController {
 	        }
 	    }
 	}
+	
+	protected function isLogged(){
+		$headers = getallheaders();
+		$authHeader = $headers['Authorization'];
+		if ($authHeader) {
+			try {
+				$secretKey = SERVER_KEY;
+				$token = JWT::decode($authHeader, $secretKey, array('HS256'));
+				return true;
+			}catch (Exception $e) {
+				return false;
+			}				
+		}
+	}
 }

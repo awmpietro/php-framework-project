@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 	<head>
-		<title>PHP Framework Project</title>
+		<title>Calendar Manager</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,300,400,600,700,800' rel='stylesheet' type='text/css'/>
@@ -15,6 +15,7 @@
 		<![endif]-->
 	</head>
 	<body >
+		<?php if($this->active != 'login') : ?>
 		<nav class="navbar navbar-inverse navbar-static-top">
 			<div class="container">
 				<div class="navbar-header">
@@ -24,7 +25,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/">PHP Framework Project</a>
+					<a class="navbar-brand" href="/">C M</a>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
@@ -33,6 +34,7 @@
 				</div>
 			</div>
 		</nav>
+		<?php endif; ?>
 		<?php echo $this->content; ?>
 		<?php foreach ($js as $j) : ?>
 		<script type="text/javascript" src="<?php echo $j; ?>" ></script>
