@@ -5,12 +5,13 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,300,400,600,700,800' rel='stylesheet' type='text/css'/>
-		<link type="text/css" rel="stylesheet" href="./public/libs/bootstrap/dist/css/bootstrap.min.css" />
-		<link type="text/css" rel="stylesheet" href="./public/libs/font-awesome/css/font-awesome.min.css" />
+		<?php foreach ($css as $c) : ?>
+		<link href="<?php echo $c; ?>" rel='stylesheet' type='text/css'/>
+		<?php endforeach; ?>
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
-		<script type="text/javascript" src="./public/libs/html5shiv/dist/html5shiv.min.js"></script>
-		<script type="text/javascript" src="./public/libs/respond/dest/respond.min.js"></script>
+		<script type="text/javascript" src="public/libs/html5shiv/dist/html5shiv.min.js"></script>
+		<script type="text/javascript" src="public/libs/respond/dest/respond.min.js"></script>
 		<![endif]-->
 	</head>
 	<body >
@@ -33,7 +34,8 @@
 			</div>
 		</nav>
 		<?php echo $this->content; ?>
-		<script type="text/javascript" src="./public/libs/jquery/dist/jquery.js" ></script>
-		<script type="text/javascript" src="./public/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+		<?php foreach ($js as $j) : ?>
+		<script type="text/javascript" src="<?php echo $j; ?>" ></script>
+		<?php endforeach; ?>
 	</body>
 </html>

@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once __DIR__ . "/config/config.php";
-require_once __DIR__ . "/class_autoloader.php";
-$frontController = new Controller\FrontController;
+require_once "class_autoloader.php";
+require_once "config/config.php";
+require_once("autoload.php");
+
 $frontController->run();

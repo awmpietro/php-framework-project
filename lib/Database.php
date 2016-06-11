@@ -1,6 +1,7 @@
 <?php
-namespace lib;
+namespace Lib;
 use \PDO as PDO;
+use \Autoloader as Autoloader;
 
 class Database {
     private static $connection;
@@ -8,7 +9,7 @@ class Database {
 	public $fetchMode = PDO::FETCH_ASSOC;
 	
 	public function __construct(){
-		require_once('./config/database.php');
+		include Autoloader::generalLoader('database.php', 'config');
 		$this->db = $database['default'];
 	}
 
@@ -41,13 +42,13 @@ class Database {
 	            	$result[] = $row;
 	            }
 	            return $result;
-        	}catch(\PDOException $e) {
-				unset($e);
-				return $result;
-			}
-			//finally{
-        		//return $result;
-        	//}
+//        	}catch(\PDOException $e) {
+//				unset($e);
+//				return $result;
+//			}
+			}finally{
+        		return $result;
+        	}
         } catch(\PDOException $e) {
             echo 'Erro: '.$e->getMessage();
         }

@@ -1,6 +1,5 @@
 <?php
 namespace Model;
-use model\BaseModel as BaseModel;
 
 class ProdutosModel extends BaseModel{
 	

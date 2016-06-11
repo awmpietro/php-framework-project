@@ -5,6 +5,7 @@
 		</div>
 	</div>
 	<hr>
+	<?php  print_r($produtos); ?>
 	<div class="row">
 		<?php $this->flash( 'sucesso' ); ?>
 		<?php $this->flash( 'erro	' ); ?>

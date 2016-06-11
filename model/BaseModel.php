@@ -2,7 +2,7 @@
 namespace Model;
 use \lib\Database as Database;
 
-class BaseModel{
+abstract class BaseModel{
 	
 	protected $db;
 	protected $params = array();

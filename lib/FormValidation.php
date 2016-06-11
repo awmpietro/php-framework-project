@@ -1,6 +1,6 @@
 <?php
-namespace lib;
-\Autoloader::generalLoader('gump.class.php');
+namespace Lib;
+include \Autoloader::generalLoader('gump.class.php');
 use \Gump as Gump;
 
 class FormValidation extends GUMP {

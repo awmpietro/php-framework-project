@@ -1,22 +1,28 @@
 <?php
 namespace Controller;
 use Controller\BaseController as BaseController;
-use model\ProdutosModel as ProdutosModel;
-use lib\FormValidation as FormValidation;
+use Model\ProdutosModel as ProdutosModel;
+use Lib\FormValidation as FormValidation;
+use \Autoloader as Autoloader;
 
 class IndexController extends BaseController {
-	
-	protected $produtos;
-	
-	function __construct() {
-		$this->active = 'produtos';
+
+	public function __construct() {
+		$this->css = array(
+			Autoloader::generalLoader('bootstrap.min.css', FRONT_LIBS . "/bootstrap/dist/css"),
+			Autoloader::generalLoader('font-awesome.css', FRONT_LIBS ."/font-awesome/css")
+		);
+		$this->js = array(
+			Autoloader::generalLoader('jquery.js', FRONT_LIBS . "/jquery/dist"),
+			Autoloader::generalLoader('bootstrap.min.js', FRONT_LIBS . "/bootstrap/dist/js")
+		);
 	}
 
 	public function index() {
 		$produtosModel = new ProdutosModel();
 		$produtos = $produtosModel->getProdutos();
-		$data = array('produtos' => $produtos);
-		$this->view('produtos', $data);
+		$this->data = array('produtos' => $produtos);
+		$this->view('produtos');
 	}
 	
 	public function adicionar_produto(){
